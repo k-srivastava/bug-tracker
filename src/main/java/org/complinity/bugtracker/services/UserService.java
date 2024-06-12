@@ -1,12 +1,12 @@
 package org.complinity.bugtracker.services;
 
-import org.complinity.bugtracker.models.LoginModel;
-import org.complinity.bugtracker.models.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -24,20 +24,13 @@ public class UserService {
      *
      * @param emailAddress Email address of the user to search for.
      *
-     * @return UserModel if the corresponding user is found, else null.
+     * @return User data if the corresponding user is found, else null.
      */
-    public UserModel getUserByEmailAddress(String emailAddress) {
+    public Map<String, Object> getUserByEmailAddress(String emailAddress) {
         String query = "SELECT * FROM users where email_address = ?";
 
         try {
-            return jdbcTemplate.queryForObject(
-                query,
-                (rs, rowNum) -> new UserModel(
-                    rs.getString("email_address"),
-                    rs.getString("password")
-                ),
-                emailAddress
-            );
+            return jdbcTemplate.queryForMap(query, emailAddress);
         }
         catch (EmptyResultDataAccessException e) {
             return null;
@@ -47,16 +40,16 @@ public class UserService {
     /**
      * Authenticate the login details of a user with the database entry.
      *
-     * @param login User details received at login with a plaintext password.
+     * @param loginData User details received at login with a plaintext password.
      *
      * @return True if the user email and password match, else false.
      */
-    public boolean authenticateUser(LoginModel login) {
-        UserModel dbUser = getUserByEmailAddress(login.emailAddress());
+    public boolean authenticateUser(Map<String, Object> loginData) {
+        Map<String, Object> dbUser = getUserByEmailAddress(loginData.get("emailAddress").toString());
 
         if (dbUser == null)
             return false;
 
-        return passwordEncoder.matches(login.plainPassword(), dbUser.encodedPassword());
+        return passwordEncoder.matches(loginData.get("plainPassword").toString(), dbUser.get("password").toString());
     }
 }
