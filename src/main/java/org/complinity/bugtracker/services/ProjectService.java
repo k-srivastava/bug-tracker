@@ -67,7 +67,7 @@ public class ProjectService {
      */
     public Optional<String> createProject(Map<String, Object> projectData) {
         if (getProjectById((int) projectData.get("id")) != null)
-            return Optional.of("Project with id " + projectData.get("id") + " already exists.");
+            return Optional.of("Project with ID " + projectData.get("id") + " already exists.");
 
         String query = "INSERT INTO projects (id, name, owner) VALUES (?, ?, ?)";
 
