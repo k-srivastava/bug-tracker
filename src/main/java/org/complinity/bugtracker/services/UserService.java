@@ -70,9 +70,7 @@ public class UserService {
 
         try {
             jdbcTemplate.update(
-                query,
-                userData.get("emailAddress").toString(),
-                passwordEncoder.encode(userData.get("password").toString())
+                query, userData.get("emailAddress"), passwordEncoder.encode(userData.get("password").toString())
             );
 
             return Optional.empty();

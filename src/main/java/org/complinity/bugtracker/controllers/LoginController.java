@@ -32,10 +32,8 @@ public class LoginController {
     public ResponseEntity<String> register(@RequestBody Map<String, Object> loginData) {
         Optional<String> result = userService.registerUser(loginData);
 
-        return result.map(
-            s -> ResponseEntity.badRequest().body(s)).orElseGet(
-            () -> ResponseEntity.ok("Registration successful for " + loginData.get("emailAddress") + '.'
-            )
-        );
+        return result
+            .map(s -> ResponseEntity.badRequest().body(s))
+            .orElseGet(() -> ResponseEntity.ok("Registration successful for " + loginData.get("emailAddress") + '.'));
     }
 }
