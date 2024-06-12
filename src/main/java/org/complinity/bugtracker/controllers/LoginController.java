@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/login")
@@ -25,5 +26,16 @@ public class LoginController {
         if (userService.authenticateUser(loginData))
             return ResponseEntity.ok("Login successful for " + loginData.get("emailAddress") + '.');
         return ResponseEntity.badRequest().body("Invalid email address or password.");
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody Map<String, Object> loginData) {
+        Optional<String> result = userService.registerUser(loginData);
+
+        return result.map(
+            s -> ResponseEntity.badRequest().body(s)).orElseGet(
+            () -> ResponseEntity.ok("Registration successful for " + loginData.get("emailAddress") + '.'
+            )
+        );
     }
 }
