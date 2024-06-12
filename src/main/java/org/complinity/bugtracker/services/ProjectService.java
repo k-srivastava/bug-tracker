@@ -1,5 +1,8 @@
 package org.complinity.bugtracker.services;
 
+import org.complinity.bugtracker.utils.DBTransactionState;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -9,10 +12,11 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class ProjectService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProjectService.class);
+
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -63,21 +67,22 @@ public class ProjectService {
      *
      * @param projectData Project details received.
      *
-     * @return Empty Optional if the project has been successfully created, else Optional with corresponding error message.
+     * @return State corresponding to the transaction.
      */
-    public Optional<String> createProject(Map<String, Object> projectData) {
+    public DBTransactionState createProject(Map<String, Object> projectData) {
         if (getProjectById((int) projectData.get("id")) != null)
-            return Optional.of("Project with ID " + projectData.get("id") + " already exists.");
+            return DBTransactionState.ALREADY_EXISTS;
 
         String query = "INSERT INTO projects (id, name, owner) VALUES (?, ?, ?)";
 
         try {
             jdbcTemplate.update(query, projectData.get("id"), projectData.get("name"), projectData.get("owner"));
-            return Optional.empty();
+            return DBTransactionState.OK;
         }
 
         catch (DataAccessException e) {
-            return Optional.of("Could not access database: " + e.getMessage());
+            LOGGER.error("Failed to create project.", e);
+            return DBTransactionState.ACCESS_ERROR;
         }
     }
 }

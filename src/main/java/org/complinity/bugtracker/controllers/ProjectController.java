@@ -1,13 +1,13 @@
 package org.complinity.bugtracker.controllers;
 
 import org.complinity.bugtracker.services.ProjectService;
+import org.complinity.bugtracker.utils.DBTransactionState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/projects")
@@ -42,10 +42,12 @@ public class ProjectController {
 
     @PostMapping("/create")
     public ResponseEntity<String> create(@RequestBody Map<String, Object> projectData) {
-        Optional<String> result = projectService.createProject(projectData);
+        DBTransactionState result = projectService.createProject(projectData);
 
-        return result
-            .map(s -> ResponseEntity.badRequest().body(s))
-            .orElseGet(() -> ResponseEntity.ok("Creation successful for " + projectData.get("name") + '.'));
+        return switch (result) {
+            case OK -> ResponseEntity.ok("Creation successful for " + projectData.get("name") + '.');
+            case ALREADY_EXISTS -> ResponseEntity.badRequest().body("Project with ID " + projectData.get("id") + " already exists.");
+            default -> ResponseEntity.internalServerError().body("Database error occurred.");
+        };
     }
 }
