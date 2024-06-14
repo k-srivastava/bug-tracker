@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.Map;
 
 @RestController
@@ -46,6 +47,28 @@ public class BugController {
         return switch (result) {
             case OK -> ResponseEntity.ok("Creation successful for bug with ID " + bugData.get("id") + '.');
             case ALREADY_EXISTS -> ResponseEntity.badRequest().body("Bug with ID " + bugData.get("id") + " already exists.");
+            default -> ResponseEntity.internalServerError().body("Database error occurred.");
+        };
+    }
+
+    @PutMapping("/{id}/assign")
+    public ResponseEntity<String> assignBug(@PathVariable("id") int id, @RequestBody String bugOwner) {
+        DBTransactionState result = bugService.assignBug(id, bugOwner);
+
+        return switch (result) {
+            case OK -> ResponseEntity.ok("Assignment successful for bug with ID " + id + ".");
+            case DOES_NOT_EXIST -> ResponseEntity.notFound().build();
+            default -> ResponseEntity.internalServerError().body("Database error occurred.");
+        };
+    }
+
+    @PutMapping("/{id}/close")
+    public ResponseEntity<String> closeBug(@PathVariable("id") int id) {
+        DBTransactionState result = bugService.closeBug(id, new Date(System.currentTimeMillis()));
+
+        return switch (result) {
+            case OK -> ResponseEntity.ok("Closure successful for bug with ID " + id + '.');
+            case DOES_NOT_EXIST -> ResponseEntity.notFound().build();
             default -> ResponseEntity.internalServerError().body("Database error occurred.");
         };
     }

@@ -9,6 +9,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.Map;
 
 @Service
@@ -108,6 +109,56 @@ public class BugService {
 
         catch (DataAccessException e) {
             LOGGER.error("Failed to update bug.", e);
+            return DBTransactionState.ACCESS_ERROR;
+        }
+    }
+
+    /**
+     * Assign an owner to an existing bug in the database by its ID.
+     *
+     * @param id ID of the bug to assign an owner to.
+     * @param owner Email address of the new bug owner (primary key).
+     *
+     * @return State corresponding to the transaction.
+     */
+    public DBTransactionState assignBug(int id, String owner) {
+        if (getBugById(id) == null)
+            return DBTransactionState.DOES_NOT_EXIST;
+
+        String query = "UPDATE bugs SET owner = ? WHERE id = ?";
+
+        try {
+            jdbcTemplate.update(query, owner, id);
+            return DBTransactionState.OK;
+        }
+
+        catch (DataAccessException e) {
+            LOGGER.error("Failed to assign bug.", e);
+            return DBTransactionState.ACCESS_ERROR;
+        }
+    }
+
+    /**
+     * Close an existing bug in the database by its ID.
+     *
+     * @param id ID of the bug to close.
+     * @param resolutionDate Date on which the bug is closed / resolved.
+     *
+     * @return State corresponding to the transaction.
+     */
+    public DBTransactionState closeBug(int id, Date resolutionDate) {
+        if (getBugById(id) == null)
+            return DBTransactionState.DOES_NOT_EXIST;
+
+        String query = "UPDATE bugs SET resolution_date = ? WHERE id = ?";
+
+        try {
+            jdbcTemplate.update(query, resolutionDate, id);
+            return DBTransactionState.OK;
+        }
+
+        catch (DataAccessException e) {
+            LOGGER.error("Failed to close bug.", e);
             return DBTransactionState.ACCESS_ERROR;
         }
     }
