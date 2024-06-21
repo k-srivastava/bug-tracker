@@ -22,7 +22,7 @@ public class LoginController {
     @PostMapping
     public ResponseEntity<String> login(@RequestBody Map<String, Object> loginData) {
         if (userService.authenticateUser(loginData))
-            return ResponseEntity.ok("Login successful for " + loginData.get("emailAddress") + '.');
+            return ResponseEntity.ok("Login successful for " + loginData.get("username") + '.');
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password.");
     }
 
@@ -31,8 +31,8 @@ public class LoginController {
         DBTransactionState result = userService.registerUser(loginData);
 
         return switch (result) {
-            case OK -> ResponseEntity.ok("Registration successful for " + loginData.get("emailAddress") + '.');
-            case ALREADY_EXISTS -> ResponseEntity.status(HttpStatus.CONFLICT).body("User with email address '" + loginData.get("emailAddress") + "' already exists.");
+            case OK -> ResponseEntity.ok("Registration successful for " + loginData.get("username") + '.');
+            case ALREADY_EXISTS -> ResponseEntity.status(HttpStatus.CONFLICT).body("User with username '" + loginData.get("username") + "' already exists.");
             default -> ResponseEntity.internalServerError().body("Database error occurred.");
         };
     }

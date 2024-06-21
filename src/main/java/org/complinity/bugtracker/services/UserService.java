@@ -28,15 +28,15 @@ public class UserService {
     /**
      * Get the user by its email address (primary key) from the database.
      *
-     * @param emailAddress Email address of the user to search for.
+     * @param username Username of the user to search for.
      *
      * @return User data if the corresponding user is found, else null.
      */
-    public Map<String, Object> getUserByEmailAddress(String emailAddress) {
+    public Map<String, Object> getUserByUsername(String username) {
         String query = "SELECT * FROM users where email_address = ?";
 
         try {
-            return jdbcTemplate.queryForMap(query, emailAddress);
+            return jdbcTemplate.queryForMap(query, username);
         }
         catch (EmptyResultDataAccessException e) {
             return null;
@@ -51,12 +51,12 @@ public class UserService {
      * @return True if the user email and password match, else false.
      */
     public boolean authenticateUser(Map<String, Object> loginData) {
-        Map<String, Object> dbUser = getUserByEmailAddress(loginData.get("emailAddress").toString());
+        Map<String, Object> dbUser = getUserByUsername(loginData.get("username").toString());
 
         if (dbUser == null)
             return false;
 
-        return passwordEncoder.matches(loginData.get("plainPassword").toString(), dbUser.get("password").toString());
+        return passwordEncoder.matches(loginData.get("password").toString(), dbUser.get("password").toString());
     }
 
     /**
@@ -67,7 +67,7 @@ public class UserService {
      * @return State corresponding to the transaction.
      */
     public DBTransactionState registerUser(Map<String, Object> userData) {
-        if (getUserByEmailAddress(userData.get("emailAddress").toString()) != null)
+        if (getUserByUsername(userData.get("username").toString()) != null)
             return DBTransactionState.ALREADY_EXISTS;
 
         String query = "INSERT INTO users (email_address, password) VALUES (?, ?)";
