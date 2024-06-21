@@ -3,11 +3,9 @@ package org.complinity.bugtracker.controllers;
 import org.complinity.bugtracker.services.UserService;
 import org.complinity.bugtracker.utils.DBTransactionState;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -25,7 +23,7 @@ public class LoginController {
     public ResponseEntity<String> login(@RequestBody Map<String, Object> loginData) {
         if (userService.authenticateUser(loginData))
             return ResponseEntity.ok("Login successful for " + loginData.get("emailAddress") + '.');
-        return ResponseEntity.badRequest().body("Invalid email address or password.");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password.");
     }
 
     @PostMapping("/register")
@@ -34,7 +32,7 @@ public class LoginController {
 
         return switch (result) {
             case OK -> ResponseEntity.ok("Registration successful for " + loginData.get("emailAddress") + '.');
-            case ALREADY_EXISTS -> ResponseEntity.badRequest().body("User with email address '" + loginData.get("emailAddress") + "' already exists.");
+            case ALREADY_EXISTS -> ResponseEntity.status(HttpStatus.CONFLICT).body("User with email address '" + loginData.get("emailAddress") + "' already exists.");
             default -> ResponseEntity.internalServerError().body("Database error occurred.");
         };
     }
