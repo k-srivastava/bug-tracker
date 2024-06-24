@@ -50,4 +50,15 @@ public class ProjectController {
             default -> ResponseEntity.internalServerError().body("Database error occurred.");
         };
     }
+
+    @PutMapping("/{id}/assign")
+    public ResponseEntity<String> assignDeveloper(@PathVariable("id") int id, @RequestBody String developerUsername) {
+        DBTransactionState result = projectService.assignDeveloper(id, developerUsername);
+
+        return switch (result) {
+            case OK -> ResponseEntity.ok("Assignment successful for project.");
+            case DOES_NOT_EXIST -> ResponseEntity.notFound().build();
+            default -> ResponseEntity.internalServerError().body("Database error occurred.");
+        };
+    }
 }

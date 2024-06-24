@@ -51,7 +51,7 @@ public class ProjectService {
      * @return All developers if the corresponding project is found, else an empty List.
      */
     public List<String> getDevelopersByProjectId(int id) {
-        String query = "SELECT developer_email_address FROM project_developers WHERE project_id = ?";
+        String query = "SELECT developer_username FROM project_developers WHERE project_id = ?";
 
         try {
             return jdbcTemplate.queryForList(query, String.class, id);
@@ -70,18 +70,40 @@ public class ProjectService {
      * @return State corresponding to the transaction.
      */
     public DBTransactionState createProject(Map<String, Object> projectData) {
-        if (getProjectById((int) projectData.get("id")) != null)
-            return DBTransactionState.ALREADY_EXISTS;
-
-        String query = "INSERT INTO projects (id, name, owner) VALUES (?, ?, ?)";
+        String query = "INSERT INTO projects (name, owner_username, description) VALUES (?, ?, ?)";
 
         try {
-            jdbcTemplate.update(query, projectData.get("id"), projectData.get("name"), projectData.get("owner"));
+            jdbcTemplate.update(query, projectData.get("name"), projectData.get("owner_username"), projectData.get("description"));
             return DBTransactionState.OK;
         }
 
         catch (DataAccessException e) {
             LOGGER.error("Failed to create project.", e);
+            return DBTransactionState.ACCESS_ERROR;
+        }
+    }
+
+    /**
+     * Assign a new developer to an existing project.
+     *
+     * @param id ID of the project to which a developer is assigned.
+     * @param developerUsername Username of the developer to be assigned.
+     *
+     * @return State corresponding to the transaction.
+     */
+    public DBTransactionState assignDeveloper(int id, String developerUsername) {
+        if (getProjectById(id) == null)
+            return DBTransactionState.DOES_NOT_EXIST;
+
+        String query = "INSERT INTO project_developers (project_id, developer_username) VALUES (?, ?)";
+
+        try {
+            jdbcTemplate.update(query, id, developerUsername);
+            return DBTransactionState.OK;
+        }
+
+        catch (DataAccessException e) {
+            LOGGER.error("Failed to assign developer.", e);
             return DBTransactionState.ACCESS_ERROR;
         }
     }
