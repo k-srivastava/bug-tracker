@@ -33,7 +33,7 @@ public class UserService {
      * @return User data if the corresponding user is found, else null.
      */
     public Map<String, Object> getUserByUsername(String username) {
-        String query = "SELECT * FROM users where email_address = ?";
+        String query = "SELECT * FROM users where username = ?";
 
         try {
             return jdbcTemplate.queryForMap(query, username);
@@ -70,11 +70,11 @@ public class UserService {
         if (getUserByUsername(userData.get("username").toString()) != null)
             return DBTransactionState.ALREADY_EXISTS;
 
-        String query = "INSERT INTO users (email_address, password) VALUES (?, ?)";
+        String query = "INSERT INTO users (username, password) VALUES (?, ?)";
 
         try {
             jdbcTemplate.update(
-                query, userData.get("emailAddress"), passwordEncoder.encode(userData.get("password").toString())
+                query, userData.get("username"), passwordEncoder.encode(userData.get("password").toString())
             );
 
             return DBTransactionState.OK;
