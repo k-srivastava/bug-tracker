@@ -44,11 +44,9 @@ public class BugController {
     public ResponseEntity<String> createBug(@RequestBody Map<String, Object> bugData) {
         DBTransactionState result = bugService.createBug(bugData);
 
-        return switch (result) {
-            case OK -> ResponseEntity.ok("Creation successful for bug with ID " + bugData.get("id") + '.');
-            case ALREADY_EXISTS -> ResponseEntity.badRequest().body("Bug with ID " + bugData.get("id") + " already exists.");
-            default -> ResponseEntity.internalServerError().body("Database error occurred.");
-        };
+        if (result == DBTransactionState.OK)
+            return ResponseEntity.ok("Creation successful for bug.");
+        return ResponseEntity.internalServerError().body("Database error occurred.");
     }
 
     @PutMapping("/{id}/assign")
@@ -56,7 +54,7 @@ public class BugController {
         DBTransactionState result = bugService.assignBug(id, bugOwner);
 
         return switch (result) {
-            case OK -> ResponseEntity.ok("Assignment successful for bug with ID " + id + ".");
+            case OK -> ResponseEntity.ok("Assignment successful for bug.");
             case DOES_NOT_EXIST -> ResponseEntity.notFound().build();
             default -> ResponseEntity.internalServerError().body("Database error occurred.");
         };
@@ -67,7 +65,7 @@ public class BugController {
         DBTransactionState result = bugService.closeBug(id, new Date(System.currentTimeMillis()));
 
         return switch (result) {
-            case OK -> ResponseEntity.ok("Closure successful for bug with ID " + id + '.');
+            case OK -> ResponseEntity.ok("Closure successful for bug.");
             case DOES_NOT_EXIST -> ResponseEntity.notFound().build();
             default -> ResponseEntity.internalServerError().body("Database error occurred.");
         };

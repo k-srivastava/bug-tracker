@@ -50,19 +50,16 @@ public class BugService {
      * @return State corresponding to the transaction.
      */
     public DBTransactionState createBug(Map<String, Object> bugData) {
-        if (getBugById((int) bugData.get("id")) != null)
-            return DBTransactionState.ALREADY_EXISTS;
-
-        String query = "INSERT INTO bugs (id, title, description, creator, owner, created_date, target_date, resolution_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO bugs (title, description, creator_username, owner_username, project_id, created_date, target_date, resolution_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             jdbcTemplate.update(
                 query,
-                bugData.get("id"),
                 bugData.get("title"),
                 bugData.get("description"),
-                bugData.get("creator"),
-                bugData.get("owner"),
+                bugData.get("creator_username"),
+                bugData.get("owner_username"),
+                bugData.get("project_id"),
                 bugData.get("created_date"),
                 bugData.get("target_date"),
                 bugData.get("resolution_date")
@@ -89,15 +86,16 @@ public class BugService {
         if (getBugById(id) == null)
             return DBTransactionState.DOES_NOT_EXIST;
 
-        String query = "UPDATE bugs SET title = ?, description = ?, creator = ?, owner = ?, created_date = ?, target_date = ?, resolution_date = ? WHERE id = ?";
+        String query = "UPDATE bugs SET title = ?, description = ?, creator_username = ?, owner_username = ?, project_id = ?, created_date = ?, target_date = ?, resolution_date = ? WHERE id = ?";
 
         try {
             jdbcTemplate.update(
                 query,
                 bugData.get("title"),
                 bugData.get("description"),
-                bugData.get("creator"),
-                bugData.get("owner"),
+                bugData.get("creator_username"),
+                bugData.get("owner_username"),
+                bugData.get("project_id"),
                 bugData.get("created_date"),
                 bugData.get("target_date"),
                 bugData.get("resolution_date"),
@@ -117,18 +115,18 @@ public class BugService {
      * Assign an owner to an existing bug in the database by its ID.
      *
      * @param id ID of the bug to assign an owner to.
-     * @param owner Email address of the new bug owner (primary key).
+     * @param ownerUsername Email address of the new bug owner (primary key).
      *
      * @return State corresponding to the transaction.
      */
-    public DBTransactionState assignBug(int id, String owner) {
+    public DBTransactionState assignBug(int id, String ownerUsername) {
         if (getBugById(id) == null)
             return DBTransactionState.DOES_NOT_EXIST;
 
-        String query = "UPDATE bugs SET owner = ? WHERE id = ?";
+        String query = "UPDATE bugs SET owner_username = ? WHERE id = ?";
 
         try {
-            jdbcTemplate.update(query, owner, id);
+            jdbcTemplate.update(query, ownerUsername, id);
             return DBTransactionState.OK;
         }
 
