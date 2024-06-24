@@ -1,0 +1,15 @@
+<form (ngSubmit)="onSubmit()">
+    <label for="login-username">Username:</label>
+    <input type="text" id="login-username" name="login-username" [(ngModel)]="username" required>
+
+    <br>
+
+    <label for="login-password">Password:</label>
+    <input type="password" id="login-password" name="login-password" [(ngModel)]="password" required>
+
+    <br>
+
+    <button type="submit">Login</button>
+
+    <p>{{ loginMessage }}</p>
+</form>
