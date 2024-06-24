@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -23,6 +25,23 @@ public class UserService {
     public UserService(JdbcTemplate jdbcTemplate, PasswordEncoder passwordEncoder) {
         this.jdbcTemplate = jdbcTemplate;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    /**
+     * Get all the users' usernames in the database.
+     *
+     * @return Usernames of all the users if there are users, else an empty List.
+     */
+    public List<String> getAllUsernames() {
+        String query = "SELECT username FROM users";
+
+        try {
+            return jdbcTemplate.queryForList(query, String.class);
+        }
+
+        catch (EmptyResultDataAccessException e) {
+            return new ArrayList<>();
+        }
     }
 
     /**
