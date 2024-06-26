@@ -1,0 +1,58 @@
+:host {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+form {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    border: 1px solid #CCCCCC;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+mat-form-field {
+    width: 300px;
+    margin-bottom: 20px;
+}
+
+mat-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333333;
+}
+
+input[type='text'], input[type='password'] {
+    font-size: 16px;
+    height: 40px;
+    padding: 10px;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+}
+
+button[type='submit'] {
+    font-size: 16px;
+    font-weight: bold;
+    width: 300px;
+    height: 40px;
+    cursor: pointer;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 5px;
+    background-color: #4ACF50;
+}
+
+button[type='submit']:hover {
+    background-color: #3E8E41;
+}
+
+p {
+    font-size: 14px;
+    margin-top: 10px;
+    color: #666666;
+}
