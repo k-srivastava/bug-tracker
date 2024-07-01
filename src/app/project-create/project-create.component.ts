@@ -14,10 +14,10 @@ export class ProjectCreateComponent {
 
   constructor(private bugService: BugTrackerService) {}
 
-  // createProject() {
+   createProject() {
   //   this.bugService.createProject(this.projectData).subscribe(
   //     response => console.log('Project created successfully:', response),
   //     error => console.error('Error creating project:', error)
   //   );
- // }
+  }
 }

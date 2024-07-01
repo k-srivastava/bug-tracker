@@ -12,7 +12,7 @@ import { routes } from './app.routes';  // Import routes
 
 @NgModule({
   declarations: [
-    AppComponent,
+    
     ProjectCreateComponent,
     BugAssignComponent,
     BugCloseComponent
@@ -24,6 +24,6 @@ import { routes } from './app.routes';  // Import routes
     RouterModule.forRoot(routes)  // Use RouterModule.forRoot with routes
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: []
 })
 export class AppModule { }
