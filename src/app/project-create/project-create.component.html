@@ -1,0 +1,17 @@
+<form (ngSubmit)="createProject()" class="project-create-form">
+    <h2>Create Project</h2>
+    <div class="form-group">
+      <label for="projectId">Project ID:</label>
+      <input type="number" id="projectId" [(ngModel)]="projectId" name="projectId" required class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="projectName">Project Name:</label>
+      <input type="text" id="projectName" [(ngModel)]="projectName" name="projectName" required class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="projectOwner">Project Owner:</label>
+      <input type="text" id="projectOwner" [(ngModel)]="projectOwner" name="projectOwner" required class="form-control">
+    </div>
+    <button type="submit" class="btn-submit">Create Project</button>
+  </form>
+  

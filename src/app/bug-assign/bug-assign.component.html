@@ -1,0 +1,13 @@
+<form (ngSubmit)="assignBug()" class="bug-assign-form">
+    <h2>Assign Bug</h2>
+    <div class="form-group">
+      <label for="bugId">Bug ID:</label>
+      <input type="number" id="bugId" [(ngModel)]="bugId" name="bugId" required class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="bugOwner">Bug Owner:</label>
+      <input type="text" id="bugOwner" [(ngModel)]="bugOwner" name="bugOwner" required class="form-control">
+    </div>
+    <button type="submit" class="btn-submit">Assign Bug</button>
+  </form>
+  

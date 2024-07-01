@@ -1,0 +1,9 @@
+<form (ngSubmit)="closeBug()" class="bug-close-form">
+    <h2>Close Bug</h2>
+    <div class="form-group">
+      <label for="bugId">Bug ID:</label>
+      <input type="number" id="bugId" [(ngModel)]="bugId" name="bugId" required class="form-control">
+    </div>
+    <button type="submit" class="btn-submit">Close Bug</button>
+  </form>
+  
