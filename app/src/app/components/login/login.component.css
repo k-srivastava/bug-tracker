@@ -1,58 +1,84 @@
-:host {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 400px;
+    transform: translate(-50%, -50%);
+    border-radius: 1em;
+    background: #FFFFFF;
+}
+
+.center h1 {
+    font-size: 2em;
+    padding: 0.5em 0 0.5em 0;
+    text-align: center;
+    border-bottom: 1px solid #247BA0;
 }
 
 form {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    padding: 20px;
-    border: 1px solid #CCCCCC;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 0 3em;
 }
 
-mat-form-field {
-    width: 300px;
-    margin-bottom: 20px;
+form .field {
+    position: relative;
+    margin: 1em 0;
+    border-bottom: 2px solid #247BA0;
 }
 
-mat-label {
-    font-size: 16px;
-    font-weight: bold;
-    color: #333333;
+.field input {
+    font-size: 1.2em;
+    width: 100%;
+    height: 1.5em;
+    padding: 0 0.5em;
+    border: none;
+    outline: none;
+    background: none;
+    margin-top: 10px;
 }
 
-input[type='text'], input[type='password'] {
-    font-size: 16px;
-    height: 40px;
-    padding: 10px;
-    border: 1px solid #CCCCCC;
-    border-radius: 5px;
+.field label {
+    position: absolute;
+    left: 0.5em;
+    transition: 0.5s;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #B36A5E;
 }
 
-button[type='submit'] {
-    font-size: 16px;
-    font-weight: bold;
-    width: 300px;
-    height: 40px;
+button[type=submit] {
+    font-size: 1em;
+    font-weight: 500;
+    width: 100%;
+    height: 2.5em;
     cursor: pointer;
     color: #FFFFFF;
+    border: 1px solid;
+    border-radius: 0.75em;
+    outline: none;
+    background: #247BA0;
+}
+
+input[type=submit]:hover {
+    transition: 0.5s;
+    border-color: #247BA0;
+}
+
+.links {
+    font-size: 0.75em;
+    margin: 2em 0;
+    text-align: center;
+}
+
+.links button {
+    width: 30%;
+    cursor: pointer;
+    text-decoration: none;
+    color: #247BA0;
     border: none;
-    border-radius: 5px;
-    background-color: #4ACF50;
+    outline: none;
+    background: none;
 }
 
-button[type='submit']:hover {
-    background-color: #3E8E41;
-}
-
-p {
-    font-size: 14px;
-    margin-top: 10px;
-    color: #666666;
+.links button:hover {
+    text-decoration: underline;
 }

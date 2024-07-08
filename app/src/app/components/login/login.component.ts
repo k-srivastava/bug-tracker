@@ -1,19 +1,12 @@
 import {Component} from '@angular/core';
 import {FormsModule} from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatInputModule} from "@angular/material/input";
-import {MatButtonModule} from "@angular/material/button";
+import {AuthService} from "../../auth.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-login',
     standalone: true,
-    imports: [
-        FormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule
-    ],
+    imports: [FormsModule],
     providers: [],
     templateUrl: './login.component.html',
     styleUrl: './login.component.css'
@@ -23,22 +16,22 @@ export class LoginComponent {
     password: string = "";
     loginMessage: string = "";
 
-    constructor(private http: HttpClient) {
+    constructor(private authService: AuthService, private router: Router) {
     }
 
     onSubmit(): void {
-        const loginData = {
-            username: this.username,
-            password: this.password
-        };
+        const result = this.authService.login(this.username, this.password);
 
-        this.http
-            .post("http://localhost:8080/api/login", loginData, {responseType: "text"})
-            .subscribe(response => {
-                this.loginMessage = response
-            }, error => {
-                this.loginMessage = error.error
-            });
+        if (result) {
+            this.loginMessage = `Login successful for ${this.username}.`;
+            setTimeout(() => {
+                this.router.navigate(['projects']).then();
+            }, 500);
+        } else
+            this.loginMessage = 'Login failed. Invalid email or password.';
+    }
+
+    logOut() {
+        this.authService.logout();
     }
 }
-

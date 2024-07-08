@@ -24,6 +24,18 @@ public class ProjectService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    public List<Map<String, Object>> getProjects() {
+        String query = "SELECT * FROM projects";
+
+        try {
+            return jdbcTemplate.queryForList(query);
+        }
+
+        catch (EmptyResultDataAccessException e) {
+            return new ArrayList<>();
+        }
+    }
+
     /**
      * Get the project by its ID (primary key) from the database.
      *
@@ -86,7 +98,7 @@ public class ProjectService {
     /**
      * Assign a new developer to an existing project.
      *
-     * @param id ID of the project to which a developer is assigned.
+     * @param id                ID of the project to which a developer is assigned.
      * @param developerUsername Username of the developer to be assigned.
      *
      * @return State corresponding to the transaction.

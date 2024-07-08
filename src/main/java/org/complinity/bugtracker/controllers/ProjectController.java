@@ -19,6 +19,16 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
+    @GetMapping("/")
+    public ResponseEntity<List<Map<String, Object>>> getProjects() {
+        List<Map<String, Object>> projects = projectService.getProjects();
+
+        if (projects.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(projects);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Map<String, Object>> getProject(@PathVariable("id") int id) {
         Map<String, Object> project = projectService.getProjectById(id);

@@ -1,0 +1,24 @@
+<app-sidebar/>
+
+<div class="project-list">
+    <h1>Projects</h1>
+
+    <ul>
+        <li *ngFor="let project of projectList" (click)="redirectToProjectPage(project.id)" class="project">
+            <h4>{{ project.id }}</h4>
+            <h2>{{ project.name }}</h2>
+            <h3>{{ project.owner_username }}</h3>
+
+            <p *ngIf="project.description?.length <= 50">{{ project.description }}</p>
+            <p *ngIf="project.description?.length > 50">{{ project.description?.slice(0, 47) + '...' }}</p>
+
+            <span class="icon">
+                <i class="fa fa-pen" aria-hidden="true" (click)="redirectToProjectEditPage(project.id)"></i>
+            </span>
+        </li>
+    </ul>
+</div>
+
+<div class="project-create">
+    <button (click)="redirectToProjectCreatePage()">+</button>
+</div>

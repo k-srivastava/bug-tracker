@@ -1,12 +1,14 @@
 import {Component} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
+import {SidebarComponent} from "../sidebar/sidebar.component";
 
 @Component({
     selector: 'app-project-create',
     standalone: true,
     imports: [
-        FormsModule
+        FormsModule,
+        SidebarComponent
     ],
     templateUrl: './project-create.component.html',
     styleUrl: './project-create.component.css'

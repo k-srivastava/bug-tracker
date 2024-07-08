@@ -1,22 +1,32 @@
-<h1>Create a New Project</h1>
+<app-sidebar/>
 
-<form (ngSubmit)="onSubmit()">
-    <label for="project-name">Name:</label>
-    <input type="email" id="project-name" name="project-name" [(ngModel)]="name" required>
+<div class="center">
+    <h1>Create a New Project</h1>
 
-    <br>
+    <form (ngSubmit)="onSubmit()">
+        <div class="field">
+            <label for="project-name">Name:</label>
+            <input type="email" id="project-name" name="project-name" [(ngModel)]="name" required>
+        </div>
 
-    <label for="project-owner-username">Owner:</label>
-    <input type="text" id="project-owner-username" name="project-owner-username" [(ngModel)]="owner" required>
+        <br>
 
-    <br>
+        <div class="field">
+            <label for="project-owner-username">Owner:</label>
+            <input type="text" id="project-owner-username" name="project-owner-username" [(ngModel)]="owner" required>
+        </div>
 
-    <label for="project-description">Description:</label>
-    <input type="text" id="project-description" name="project-description" [(ngModel)]="description">
+        <br>
 
-    <br>
+        <div class="field">
+            <label for="project-description">Description:</label>
+            <textarea id="project-description" name="project-description" [(ngModel)]="description"></textarea>
+        </div>
 
-    <button type="submit">Create</button>
+        <br>
 
-    <p>{{ creationMessage }}</p>
-</form>
+        <button type="submit">Create</button>
+
+        <p>{{ creationMessage }}</p>
+    </form>
+</div>

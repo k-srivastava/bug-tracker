@@ -1,0 +1,40 @@
+.center {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    top: 40vh;
+    padding: 5vh 5vw;
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    border-width: 0 5px 5px 0;
+    border-style: solid;
+    border-color: #FFFFFF;
+    border-radius: 1.5vw;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+    min-height: 50vh;
+}
+
+.center h1 {
+    font-size: 4em;
+    text-align: center;
+}
+
+.project-edit {
+    position: absolute;
+    top: 5%;
+    left: 90%;
+}
+
+.project-edit button {
+    font-size: 3em;
+    width: 2em;
+    height: 2em;
+    border-width: 0 3px 3px 0;
+    border-style: solid;
+    border-color: #FFFFFF;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+}

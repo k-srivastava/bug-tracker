@@ -1,5 +1,14 @@
-<div>
-    <h2>Project Details</h2>
-    <p>Project ID: {{ id }}</p>
-    <p>Project Name: {{ name }}</p>
+<app-sidebar/>
+
+<div class="project">
+    <div class="center">
+        <h1>{{ name }}</h1>
+        <h2>ID: {{ id }}</h2>
+        <h2>Owner: {{ owner }}</h2>
+        <P>Description<br>{{ description }}</P>
+    </div>
+
+    <div class="project-edit">
+        <button type="button" class="icon" (click)="redirectToProjectEditPage(id!)"><i class="fa fa-pen" aria-hidden="true"></i></button>
+    </div>
 </div>
